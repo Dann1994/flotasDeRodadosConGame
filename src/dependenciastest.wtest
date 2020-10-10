@@ -1,0 +1,62 @@
+import rodados.*
+import dependencias.*
+import pedidos.*
+
+test "dependencias" {
+	// dependencia deporte
+    const deportes = new Dependencia(empleados = 45)
+    
+    const cachito  = new Corsa(color = "rojo")
+    const corsa2   = new Corsa(color = "azul")
+    const corsa3   = new Corsa(color = "verde")
+    const kwid1    = new Kwid(tanqueAdicional = true)
+    const autoEsp1 = new AutoESpecial(capacidad = 5, velMax = 160, peso = 1200, color = "beige")
+    deportes.agregarListaAFlota([ cachito, corsa2, corsa3, kwid1, autoEsp1 ])
+
+	assert.equals(6450, deportes.pesoTotalFlota())
+	assert.equals(true, deportes.estaBienEquipada())
+	assert.equals(7, deportes.capacidadTotalEnColor("azul"))
+	assert.equals("beige", deportes.colorDelRodadoMasRapido())
+	assert.equals(true, deportes.esGrande())
+	assert.equals(25, deportes.capacidadFaltante())
+	
+	
+	// dependencia clutura
+ 	const cultura = new Dependencia(empleados = 31)
+ 	
+	const kwid2   = new Kwid(tanqueAdicional = false)
+	const kwid3   = new Kwid(tanqueAdicional = true)
+	const kwid4   = new Kwid(tanqueAdicional = true)
+	trafic.setInterior(interiorPopular)
+	trafic.setMotor(motorBataton)
+	cultura.agregarListaAFlota([cachito, kwid3, kwid2, kwid4, trafic])
+	
+	assert.equals(10700, cultura.pesoTotalFlota())
+	assert.equals(false, cultura.estaBienEquipada())
+	assert.equals(10, cultura.capacidadTotalEnColor("azul"))
+	assert.equals("rojo", cultura.colorDelRodadoMasRapido())
+	assert.equals(false, cultura.esGrande())
+	assert.equals(5, cultura.capacidadFaltante()) 
+}
+
+test "pedidos" {
+	
+	const auto1 = new AutoESpecial(color = "rojo", capacidad = 5, velMax = 150, peso = 1300)
+	const auto2 = new AutoESpecial(color = "verde", capacidad = 4, velMax = 130, peso = 1000)
+	const auto3 = new AutoESpecial(color = "azul", capacidad = 3, velMax = 100, peso = 800)
+	const pedido1 = new Pedido( coloresIncompatibles = #{"naranja", "rojo"}, distancia = 10, tiempoMax = 10, cantPasajeros = 5)
+	const pedido2 = new Pedido( coloresIncompatibles = #{"naranja", "rojo"}, distancia = 10, tiempoMax = 10, cantPasajeros = 4)
+	const pedido3 = new Pedido( coloresIncompatibles = #{"naranja", "rojo"}, distancia = 10, tiempoMax = 10, cantPasajeros = 3)
+	const dependencia1 = new Dependencia(empleados = 1000, flotaRodados = [auto1, auto2, auto3])
+	dependencia1.agregarPedido(pedido1)
+	dependencia1.agregarPedido(pedido2)
+	dependencia1.agregarPedido(pedido3)
+	
+	
+	assert.equals(false, dependencia1.sePuedeSatisfacer(pedido1))
+	assert.equals(true, dependencia1.sePuedeSatisfacer(pedido2))
+	assert.equals(true, dependencia1.sePuedeSatisfacer(pedido3))
+	
+	assert.equals([ pedido1 ], dependencia1.pedidosQueNoSeSatisfacen())
+}
+

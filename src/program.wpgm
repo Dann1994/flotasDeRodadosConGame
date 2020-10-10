@@ -1,0 +1,34 @@
+import wollok.game.*
+import cosas.*
+
+program abc {
+
+	game.title("juego")// Titulo del juego
+	
+	game.width(10)// Alto del la pantalla
+	game.height(10)// Ancho del tablero
+	
+	game.origin()// Pocicion del objeto
+	game.center()// Poscion central deñ tablero
+	
+	game.addVisual(auto)// Agrega a un objeto en la pantalla
+	const autoRival1 = new AutosRivales(position = new Position(x = 5, y = 7))
+	game.addVisual(autoRival1)
+	
+	
+    keyboard.s().onPressDo{ game.stop() } //Al tocart la tecla "s" se cierra el juego
+    keyboard.right().onPressDo{auto.moverDerecha()}
+    
+    keyboard.p().onPressDo{ 
+    	const autoRival = new AutosRivales( position = auto.position().right(1) ) // Al presional "p", agreaga un auto rival a la derecaha del auto principal
+    	auto.ponerAuto(autoRival)
+    	game.addVisual(autoRival)
+    }
+    
+   keyboard.q().onPressDo{ 
+   game.whenCollideDo(auto,{autoR => auto.destruir(autoR)}) // Al presionar "q" si el objeto "auto" esta sobre un objeto del juego, lo elimina.
+   }
+
+   game.start()// Inicia el juego
+
+}

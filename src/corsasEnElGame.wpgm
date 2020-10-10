@@ -1,7 +1,64 @@
 import wollok.game.*
+import rodados.*
+import paredes.*
 
 program corsasEnElGame {
-	// hacer las inicializaciones necesarias 
+	var autoActivo = null
+	
+	game.title("Corsas game")
+	
+	game.height(11)
+	game.width(10)
+	
+	var corsa1 = new Corsa( color = rojo,  position = (game.at(3,0)))
+	var corsa2 = new Corsa( color = verde, position = (game.at(3,5)))
+	var corsa3 = new Corsa( color = azul,  position = (game.at(3,10)))
+	
+	var pared1 = new Pared( image = "paredMadera.png", position = (game.at(7, 0)), resistencia = 5)
+	var pared2 = new Pared( image = "paredLadrillos.png", position = (game.at(7, 5)), resistencia = 10)
+	var pared3 = new Pared( image = "paredHierro.png", position = (game.at(7, 10)), resistencia = 15)
+	
+	game.addVisual(pared1)
+	game.addVisual(pared2)
+	game.addVisual(pared3)
+	
+	game.addVisual(corsa1)
+	game.addVisual(corsa2)
+	game.addVisual(corsa3)
+
+	//Movimientos de los autos
+	keyboard.right().onPressDo{autoActivo.moverDerecha();
+		game.whenCollideDo( autoActivo, { pared => 
+			if (pared.resistencia() > 0) {
+				pared.chocar(); autoActivo.MoverPosicionAnterior()
+			} else {
+				game.removeVisual(pared)
+            }
+		})
+	}
+	keyboard.left().onPressDo{autoActivo.moverIzquierda();
+		game.whenCollideDo( autoActivo, { pared => 
+			if (pared.resistencia() > 0) {
+				pared.chocar(); autoActivo.MoverPosicionAnterior()
+			} else {
+				game.removeVisual(pared)
+			}
+		})
+	}
+	
+	//Cambio de color
+	keyboard.r().onPressDo{autoActivo.cambiarAColor(rojo)}
+	keyboard.v().onPressDo{autoActivo.cambiarAColor(verde)}
+	keyboard.a().onPressDo{autoActivo.cambiarAColor(azul)}
+	
+	//Selección de auto
+	keyboard.num1().onPressDo{autoActivo = corsa1; game.say(autoActivo, "Estoy activo")}
+	keyboard.num2().onPressDo{autoActivo = corsa2; game.say(autoActivo, "Estoy activo")}
+	keyboard.num3().onPressDo{autoActivo = corsa3; game.say(autoActivo, "Estoy activo")}
+	
+	
+	game.say(corsa1, "Selecciona un auto con las teclas 1, 2 y 3")
+	game.say(corsa3, "Cambia color con las teclas A, V y R")
 	
 	game.start()
 }
