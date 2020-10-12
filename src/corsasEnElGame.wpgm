@@ -45,6 +45,7 @@ program corsasEnElGame {
 			}
 		})
 	}
+
 	
 	//Cambio de color
 	keyboard.r().onPressDo{autoActivo.cambiarAColor(rojo)}

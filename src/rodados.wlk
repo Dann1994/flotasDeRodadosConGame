@@ -28,9 +28,7 @@ class Corsa {
 	method recorrioFilas(lista) = lista.all({ numero => self.pasoPorFila(numero)})
 	
 	method cambiarAColor(unColor) { color = unColor }
-	
-	method moverHacia(unaDireccion) { self.position(self.position().right(1)) }
-}
+}	
 
 object rojo {
 	method imagen() = "rojo.png" 
